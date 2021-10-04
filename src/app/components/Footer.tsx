@@ -1,3 +1,4 @@
+import { ReactElement } from 'react';
 import { Theme } from '@mui/material/styles';
 import { makeStyles, createStyles } from '@mui/styles';
 import Link from '@mui/material/Link';
@@ -21,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 // functional component
-const Footer = () => {
+const Footer = (): ReactElement => {
   const classes = useStyles();
   return (
     <div className={classes.root}>

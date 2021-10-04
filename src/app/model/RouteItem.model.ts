@@ -10,7 +10,9 @@ interface RouteItem {
   enabled: boolean;
   icon?: ComponentType;
   subRoutes?: Array<RouteItem>;
+  bottomRoutes?: Array<RouteItem>;
   appendDivider?: boolean;
+  isBottom?: boolean;
 }
 
 export default RouteItem;

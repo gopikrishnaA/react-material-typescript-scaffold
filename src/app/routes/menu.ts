@@ -1,3 +1,4 @@
+import { lazy } from 'react';
 // icons
 import HomeIcon from '@mui/icons-material/Home';
 import DashboardIcon from '@mui/icons-material/BarChartOutlined';
@@ -9,28 +10,28 @@ import PublicIcon from '@mui/icons-material/LockOpenOutlined';
 import UserIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/LogoutOutlined';
 
-// components
-import Home from '../pages/Home';
-import Dashboard from '../pages/Dashboard';
-import GHPrivate from '../pages/GitHub/PrivateRepo';
-import GHPublic from '../pages/GitHub/PublicRepo';
-import CodeEditor from '../pages/CodeEditor';
-import Settings from '../pages/Settings';
-
 // interface
 import RouteItem from '../model/RouteItem.model';
+// components
+const Home = lazy(() => import('../pages/Home'));
+const Dashboard = lazy(() => import('../pages/Dashboard'));
+const GHPrivate = lazy(() => import('../pages/GitHub/PrivateRepo'));
+const GHPublic = lazy(() => import('../pages/GitHub/PublicRepo'));
+const CodeEditor = lazy(() => import('../pages/CodeEditor'));
+const Profile = lazy(() => import('../pages/Profile'));
+const Settings = lazy(() => import('../pages/Settings'));
+const NotFound = lazy(() => import('../components/NotFound'));
 
 // define app routes
-export const routes: Array<RouteItem> = [
+export const headerMenu: Array<RouteItem> = [
   {
     key: 'router-home',
     title: 'Home',
     tooltip: 'Home',
-    path: '/',
+    path: '/home',
     enabled: true,
     component: Home,
-    icon: HomeIcon,
-    appendDivider: true
+    icon: HomeIcon
   },
   {
     key: 'router-dashboard',
@@ -75,28 +76,30 @@ export const routes: Array<RouteItem> = [
     path: '/code-editor',
     enabled: true,
     component: CodeEditor,
-    icon: CodeIcon,
-    appendDivider: true
-  },
-  {
-    key: 'router-settings',
-    title: 'Settings',
-    tooltip: 'Settings',
-    path: '/settings',
-    enabled: true,
-    component: Settings,
-    icon: SettingsIcon
+    icon: CodeIcon
   }
 ];
 
-export const settings: Array<RouteItem> = [
+export const footerMenu: Array<RouteItem> = [
+  {
+    key: 'router-logout',
+    title: 'Logout',
+    tooltip: 'Logout',
+    path: '/login',
+    enabled: true,
+    component: NotFound,
+    icon: LogoutIcon
+  }
+];
+
+export const settingsMenu: Array<RouteItem> = [
   {
     key: 'router-profile',
     title: 'Profile',
     tooltip: 'Profile',
-    path: '/',
+    path: '/profile',
     enabled: true,
-    component: Home,
+    component: Profile,
     icon: UserIcon
   },
   {
@@ -113,9 +116,9 @@ export const settings: Array<RouteItem> = [
     key: 'router-logout',
     title: 'Logout',
     tooltip: 'Logout',
-    path: '/logout',
+    path: '/login',
     enabled: true,
-    component: Settings,
+    component: NotFound,
     icon: LogoutIcon
   }
 ];

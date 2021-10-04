@@ -10,7 +10,13 @@ module.exports = {
   plugins: ['prettier'],
   rules: {
     'prettier/prettier': ['error', prettierOptions],
-    'no-console': ['error', { allow: ['warn', 'error'] }]
+    'no-console': ['error', { allow: ['warn', 'error'] }],
+    '@typescript-eslint/explicit-function-return-type': [
+      'error',
+      {
+        allowExpressions: true
+      }
+    ]
   },
   overrides: [
     {

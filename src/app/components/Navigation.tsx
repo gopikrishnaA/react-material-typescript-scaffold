@@ -6,10 +6,11 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
 // components
 import AppMenu from './AppMenu';
-import { routes } from '../config/routes';
+import { headerMenu, footerMenu } from '../routes/menu';
 
 // constants
 import { DRAWER_WIDTH } from '../utils/constants';
+import { ReactElement } from 'react';
 
 // define css-in-js
 const useStyles = makeStyles((theme: Theme) =>
@@ -54,7 +55,10 @@ interface NavigationProps {
   handleMenuClose: () => void;
 }
 
-const Navigation = ({ open, handleMenuClose }: NavigationProps) => {
+const Navigation = ({
+  open,
+  handleMenuClose
+}: NavigationProps): ReactElement => {
   const classes = useStyles();
   return (
     <Drawer
@@ -75,7 +79,7 @@ const Navigation = ({ open, handleMenuClose }: NavigationProps) => {
           <ChevronLeftIcon htmlColor="#fff" />
         </IconButton>
       </div>
-      <AppMenu routes={routes} />
+      <AppMenu headerMenu={headerMenu} footerMenu={footerMenu} />
     </Drawer>
   );
 };

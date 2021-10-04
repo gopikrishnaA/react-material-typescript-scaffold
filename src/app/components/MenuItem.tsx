@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import clsx from 'clsx';
 import {
   ListItem,
@@ -12,6 +12,7 @@ import { Theme } from '@mui/material/styles';
 import { makeStyles, createStyles } from '@mui/styles';
 import DefaultIcon from '@mui/icons-material/FileCopy';
 import { NavLink, useLocation } from 'react-router-dom';
+import { useApplication } from '../AppProvider';
 
 // models
 import RouteItem from '../model/RouteItem.model';
@@ -38,14 +39,16 @@ interface MenuItemProps {
 }
 
 // functional component
-const MenuItem = ({ route }: MenuItemProps) => {
+const MenuItem = ({ route }: MenuItemProps): ReactElement => {
   const classes = useStyles();
   const location = useLocation();
 
+  const { setAuthenticated } = useApplication();
   const handleNavigate = (
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
   ): void => {
     if (!route.enabled) e.preventDefault();
+    if (route.key === 'router-logout') setAuthenticated(false);
   };
 
   return (

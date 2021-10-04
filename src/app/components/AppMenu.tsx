@@ -22,6 +22,7 @@ import { useLocation } from 'react-router-dom';
 import RouteItem from '../model/RouteItem.model';
 // components
 import MenuItem from './MenuItem';
+import { ReactElement } from 'react';
 
 // define css-in-js
 const useStyles = makeStyles((theme: Theme) =>
@@ -37,15 +38,25 @@ const useStyles = makeStyles((theme: Theme) =>
       transition: 'box-shadow',
       transitionDuration: '1s',
       boxShadow: `0 0 3px ${theme.palette.primary.main}, 0 0 9px ${theme.palette.primary.main}, 0 0 11px ${theme.palette.primary.main}, 0 0 30px ${theme.palette.primary.main}`
+    },
+    bottomMenu: {
+      position: 'absolute',
+      bottom: 0,
+      width: '100%'
     }
   })
 );
 
 interface MenuProps {
-  routes: Array<RouteItem>;
+  headerMenu?: Array<RouteItem>;
+  footerMenu?: Array<RouteItem>;
 }
-// functional component
-const Menu = ({ routes }: MenuProps) => {
+
+interface ExpandableMenuProps {
+  menu: RouteItem;
+}
+
+const ExpandableMenu = ({ menu }: ExpandableMenuProps): ReactElement => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const location: any = useLocation();
@@ -55,49 +66,75 @@ const Menu = ({ routes }: MenuProps) => {
   };
 
   return (
-    <List>
-      {routes.map((route: RouteItem) => (
-        <>
-          {route.subRoutes ? (
-            <>
-              <ListItem button onClick={handleClick}>
-                <ListItemIcon>
-                  <IconButton
-                    className={clsx({
-                      [classes.selected]:
-                        !open &&
-                        route.subRoutes.some(
-                          (item: RouteItem) => item.path === location.pathname
-                        )
-                    })}
-                    size="small"
-                  >
-                    <Icon component={route.icon || DefaultIcon} />
-                  </IconButton>
-                </ListItemIcon>
-                <ListItemText primary={route.title} />
-                <Tooltip
-                  title={`${open ? 'Collapse' : 'Expand'}`}
-                  placement="bottom"
-                >
-                  {open ? <ExpandLess /> : <ExpandMore />}
-                </Tooltip>
-              </ListItem>
-              <Collapse in={open} timeout="auto" unmountOnExit>
-                <List className={classes.nested}>
-                  {route.subRoutes.map((sRoute: RouteItem) => (
-                    <MenuItem key={`${sRoute.key}`} route={sRoute} />
-                  ))}
-                </List>
-              </Collapse>
-            </>
-          ) : (
-            <MenuItem key={route.key} route={route} />
-          )}
-          {route.appendDivider && <Divider className={classes.divider} />}
-        </>
+    <>
+      <ListItem button onClick={handleClick}>
+        <ListItemIcon>
+          <IconButton
+            className={clsx({
+              [classes.selected]:
+                !open &&
+                menu?.subRoutes?.some(
+                  (item: RouteItem) => item.path === location.pathname
+                )
+            })}
+            size="small"
+          >
+            <Icon component={menu.icon || DefaultIcon} />
+          </IconButton>
+        </ListItemIcon>
+        <ListItemText primary={menu.title} />
+        <Tooltip title={`${open ? 'Collapse' : 'Expand'}`} placement="bottom">
+          {open ? <ExpandLess /> : <ExpandMore />}
+        </Tooltip>
+      </ListItem>
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <List className={classes.nested}>
+          {menu?.subRoutes?.map((sRoute: RouteItem) => (
+            <MenuItem key={`${sRoute.key}`} route={sRoute} />
+          ))}
+        </List>
+      </Collapse>
+    </>
+  );
+};
+
+const BottomMenu = ({ footerMenu }: MenuProps): ReactElement => {
+  const classes = useStyles();
+  return (
+    <>
+      <Divider className={classes.divider} />
+      {footerMenu?.map((_route: RouteItem) => (
+        <MenuItem key={_route.key} route={_route} />
       ))}
-    </List>
+    </>
+  );
+};
+// functional component
+const Menu = ({ headerMenu, footerMenu }: MenuProps): ReactElement => {
+  const classes = useStyles();
+
+  const getComponent = (route: RouteItem): ReactElement => {
+    if (route.subRoutes) {
+      return <ExpandableMenu key={route.key} menu={route} />;
+    } else {
+      return <MenuItem key={route.key} route={route} />;
+    }
+  };
+
+  return (
+    <>
+      <List>
+        {headerMenu?.map((route: RouteItem) => (
+          <>
+            {getComponent(route)}
+            {route.appendDivider && <Divider className={classes.divider} />}
+          </>
+        ))}
+      </List>
+      <List className={classes.bottomMenu}>
+        {footerMenu && <BottomMenu footerMenu={footerMenu} />}
+      </List>
+    </>
   );
 };
 

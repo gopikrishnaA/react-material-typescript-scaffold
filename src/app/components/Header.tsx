@@ -1,4 +1,4 @@
-import React, { useState, MouseEvent } from 'react';
+import React, { useState, MouseEvent, ReactElement } from 'react';
 import UserIcon from '@mui/icons-material/AccountCircle';
 import Brightness3Icon from '@mui/icons-material/Brightness3';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
@@ -18,13 +18,13 @@ import clsx from 'clsx';
 import { APP_TITLE, DRAWER_WIDTH } from '../utils/constants';
 // components
 import AppMenu from './AppMenu';
-import { settings } from '../config/routes';
+import { settingsMenu } from '../routes/menu';
 
 // define css-in-js
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     appBar: {
-      'z-index': `${theme.zIndex.drawer + 1} !important`,
+      'z-index': `${theme.zIndex.drawer + 1}`,
       transition: theme.transitions.create(['width', 'margin'], {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     appBarShift: {
       marginLeft: DRAWER_WIDTH,
-      width: `calc(100% - ${DRAWER_WIDTH}px) !important`,
+      width: `calc(100% - ${DRAWER_WIDTH}px)`,
       transition: theme.transitions.create(['width', 'margin'], {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen
@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginRight: 36
     },
     hide: {
-      display: 'none !important'
+      display: 'none'
     }
   })
 );
@@ -72,15 +72,15 @@ const Header = ({
   handleMenuOpen,
   toggleTheme,
   useDefaultTheme
-}: HeaderProps) => {
+}: HeaderProps): ReactElement => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
-  const onProfileIconClick = (event: MouseEvent<HTMLButtonElement>) => {
+  const onProfileIconClick = (event: MouseEvent<HTMLButtonElement>): void => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleProfilePopoverClose = () => {
+  const handleProfilePopoverClose = (): void => {
     setAnchorEl(null);
   };
 
@@ -136,7 +136,7 @@ const Header = ({
             horizontal: 'left'
           }}
         >
-          <AppMenu routes={settings} />
+          <AppMenu headerMenu={settingsMenu} />
         </Popover>
       </Toolbar>
     </AppBar>

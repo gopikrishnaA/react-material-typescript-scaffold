@@ -2,6 +2,15 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+### React TypeScript Cheatsheet
+Setup TypeScript with React, [React TypeScript Cheatsheet](https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/context)
+
+### Material UI - React Typescript
+Using material ui, [mui.com](https://mui.com/getting-started/usage/)
+
+### Graphql - Apollo/client
+Using apollo client, [apollo/client](https://www.apollographql.com/docs/react/) 
+
 ## Available Scripts
 
 In the project directory, you can run:
